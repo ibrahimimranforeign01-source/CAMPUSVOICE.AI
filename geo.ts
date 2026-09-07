@@ -1,4 +1,4 @@
-import type { Coord } from "../types";
+import type { Coord } from './types';
 
 const EARTH_M = 6371000;
 
