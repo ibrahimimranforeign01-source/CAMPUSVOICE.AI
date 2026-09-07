@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { campusLocations } from './campusLocations';
+   import { campusLocations, CAMPUS_CENTER } from './campusLocations';
    import type { Coord, CampusLocation } from './types';
 
 type Props = {
