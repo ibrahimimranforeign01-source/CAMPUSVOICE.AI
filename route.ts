@@ -1,4 +1,4 @@
-import type { Coord, RouteInfo } from "../types";
+import type { Coord, RouteInfo } from './types' ;
 import { compassLabel, haversineMeters, walkingMinutes } from "./geo";
 
 function straightRoute(start: Coord, end: Coord): RouteInfo {
