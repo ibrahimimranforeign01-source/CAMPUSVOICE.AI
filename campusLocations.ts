@@ -1,4 +1,4 @@
-import type { CampusLocation } from "../types";
+import type { CampusLocation } from './types';
 
 /**
  * University of Ibadan campus dataset for the MVP.
