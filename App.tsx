@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { CampusMap } from "./components/CampusMap";
-import { campusLocations, categories } from "./data/campusLocations";
-import { naturalInstruction } from "./services/ai";
-import { formatDistance, haversineMeters, walkingMinutes } from "./services/geo";
-import { fetchRoute } from "./services/route";
-import { speak, stopSpeaking, voiceAvailable } from "./services/speech";
-import { getRecentIds, getVoiceOn, pushRecent, setVoiceOn } from "./services/storage";
-import type { CampusLocation, Coord, RouteInfo, Screen } from "./types";
+import { CampusMap } from "./CampusMap";
+import { campusLocations, categories } from "./campusLocations";
+import { naturalInstruction } from "./ai";
+import { formatDistance, haversineMeters, walkingMinutes } from "./geo";
+import { fetchRoute } from "./route";
+import { speak, stopSpeaking, voiceAvailable } from "./speech";
+import { getRecentIds, getVoiceOn, pushRecent, setVoiceOn } from "./storage";
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>("home");
