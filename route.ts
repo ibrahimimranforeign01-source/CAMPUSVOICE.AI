@@ -1,5 +1,24 @@
-import type { Coord, RouteInfo } from './types' ;
+import type { Coord, RouteInfo } from './types';
 import { compassLabel, haversineMeters, walkingMinutes } from "./geo";
+
+// Bounding box roughly covering the UI campus. Adjust these if your
+// pins extend further than this in any direction.
+const CAMPUS_BOUNDS = {
+  minLat: 7.438,
+  maxLat: 7.450,
+  minLng: 3.894,
+  maxLng: 3.908,
+};
+
+function isInsideCampus(points: Coord[]): boolean {
+  return points.every(
+    (p) =>
+      p.lat >= CAMPUS_BOUNDS.minLat &&
+      p.lat <= CAMPUS_BOUNDS.maxLat &&
+      p.lng >= CAMPUS_BOUNDS.minLng &&
+      p.lng <= CAMPUS_BOUNDS.maxLng,
+  );
+}
 
 function straightRoute(start: Coord, end: Coord): RouteInfo {
   const distanceMeters = haversineMeters(start, end);
@@ -44,6 +63,10 @@ export async function fetchRoute(start: Coord, end: Coord): Promise<RouteInfo> {
     const coords = (route.geometry.coordinates as [number, number][]).map(
       ([lng, lat]) => ({ lat, lng }),
     );
+
+    // If OSRM's route leaves the campus area, don't use it.
+    if (!isInsideCampus(coords)) return straightRoute(start, end);
+
     const steps: string[] = [];
     for (const leg of route.legs ?? []) {
       for (const step of leg.steps ?? []) {
@@ -71,6 +94,13 @@ export async function fetchRoute(start: Coord, end: Coord): Promise<RouteInfo> {
 function humanStep(type: string, modifier: string): string {
   if (type === "depart") return "Start walking";
   if (type === "arrive") return "Arrive at your destination";
+  if (type === "turn") return `Turn ${modifier || "ahead"}`;
+  if (type === "new name") return "Continue on the path";
+  if (type === "merge") return "Merge with the path";
+  if (type === "roundabout") return "Use the roundabout";
+  if (type === "end of road") return `Turn ${modifier || "at the end of the road"}`;
+  return modifier ? `${type} ${modifier}` : type;
+}  if (type === "arrive") return "Arrive at your destination";
   if (type === "turn") return `Turn ${modifier || "ahead"}`;
   if (type === "new name") return "Continue on the path";
   if (type === "merge") return "Merge with the path";
