@@ -67,6 +67,22 @@ export default function App() {
     const onLine = route.points.some((p) => haversineMeters(user, p) < 80);
     setOffRoute(!onLine && route.source === "osrm");
   }, [user, screen, destination, route, voiceOn]);
+  
+   useEffect(() => {
+     const current = window.history.state?.screen;
+     if (current !== screen) {
+       window.history.pushState({ screen }, "");
+     }
+   }, [screen]);
+
+   useEffect(() => {
+     function onPop(e: PopStateEvent) {
+       const s = e.state?.screen as Screen | undefined;
+       if (s) setScreen(s);
+     }
+     window.addEventListener("popstate", onPop);
+     return () => window.removeEventListener("popstate", onPop);
+   }, []);
 
   async function requestLocation() {
     if (!navigator.geolocation) {
