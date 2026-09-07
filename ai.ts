@@ -1,4 +1,4 @@
-import type { CampusLocation, Coord } from "../types";
+import type { CampusLocation, Coord }  from './types';
 import { formatDistance, haversineMeters } from "./geo";
 
 function fallbackLine(args: {
