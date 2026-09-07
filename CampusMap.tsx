@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { campusLocations } from './campusLocations';
-import type { Something } from './types';
+   import type { Coord, CampusLocation } from './types';
 
 type Props = {
   user?: Coord | null;
