@@ -1,8 +1,6 @@
 import type { Coord, RouteInfo } from './types';
 import { compassLabel, haversineMeters, walkingMinutes } from "./geo";
 
-// Bounding box roughly covering the UI campus. Adjust these if your
-// pins extend further than this in any direction.
 const CAMPUS_BOUNDS = {
   minLat: 7.438,
   maxLat: 7.450,
@@ -64,7 +62,6 @@ export async function fetchRoute(start: Coord, end: Coord): Promise<RouteInfo> {
       ([lng, lat]) => ({ lat, lng }),
     );
 
-    // If OSRM's route leaves the campus area, don't use it.
     if (!isInsideCampus(coords)) return straightRoute(start, end);
 
     const steps: string[] = [];
@@ -94,13 +91,6 @@ export async function fetchRoute(start: Coord, end: Coord): Promise<RouteInfo> {
 function humanStep(type: string, modifier: string): string {
   if (type === "depart") return "Start walking";
   if (type === "arrive") return "Arrive at your destination";
-  if (type === "turn") return `Turn ${modifier || "ahead"}`;
-  if (type === "new name") return "Continue on the path";
-  if (type === "merge") return "Merge with the path";
-  if (type === "roundabout") return "Use the roundabout";
-  if (type === "end of road") return `Turn ${modifier || "at the end of the road"}`;
-  return modifier ? `${type} ${modifier}` : type;
-}  if (type === "arrive") return "Arrive at your destination";
   if (type === "turn") return `Turn ${modifier || "ahead"}`;
   if (type === "new name") return "Continue on the path";
   if (type === "merge") return "Merge with the path";
